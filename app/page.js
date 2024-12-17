@@ -13,6 +13,7 @@ export default function Home() {
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
    const router = useRouter();
+   const [passOTP, setPassOTP] = useState(false);
 
   const validateEmail = (email) => {
     const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -172,46 +173,52 @@ export default function Home() {
             />
           </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
           <div className="flex items-center space-x-2 ">
             <div>
-              <div>
-                {activeTab === "signup" ? (
-                  <>
-                    <button className="px-3 py-1 bg-[#feb103] text-black rounded font-bold">
-                      OTP
-                    </button>
-                    <input
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="p-1 border border-gray-300 rounded w-[100px]"
-                      required
-                    />
-                  </>
-                ) : (
-                  <>
-                    <button className="px-3 py-1 bg-[#feb103] text-black rounded font-bold">
-                      Password
-                    </button>
-                    <button className="px-3 py-1 bg-gray-200 text-gray-500 rounded">
-                      OTP
-                    </button>
-                  </>
-                )}
-              </div>
+              {/* Password Button */}
+              <button
+                onClick={() => setPassOTP(true)}
+                className={`px-3 py-1 rounded font-bold ${
+                  passOTP
+                    ? "bg-[#feb103] text-black" 
+                    : "bg-gray-200 text-gray-500" 
+                }`}
+              >
+                Password
+              </button>
+
+              {/* OTP Button */}
+              <button
+                onClick={() => setPassOTP(false)}
+                className={`px-3 py-1 rounded font-bold ${
+                  !passOTP
+                    ? "bg-[#feb103] text-black" 
+                    : "bg-gray-200 text-gray-500" 
+                }`}
+              >
+                OTP
+              </button>
             </div>
             <div className="flex-1">
-              <input
-                type="password"
-                placeholder={activeTab === "signup" ? "OTP *" : "Password *"}
-                value={activeTab === "signup" ? otp : password}
-                onChange={(e) =>
-                  activeTab === "signup"
-                    ? setOtp(e.target.value)
-                    : setPassword(e.target.value)
-                }
-                className="w-full p-2 border border-gray-300 rounded"
-              />
+               <input
+            type={passOTP ? "password" : "text"}
+            placeholder={passOTP ? "Password" : "OTP"}
+            value={passOTP ? password : otp}
+            onChange={(e) => (passOTP ? setPassword(e.target.value) : setOtp(e.target.value))}
+            className="w-full p-2 border border-gray-300 rounded"
+          />
             </div>
           </div>
         </div>
@@ -228,6 +235,16 @@ export default function Home() {
             </a>
           )}
         </div>
+
+
+
+
+
+
+
+
+
+
 
         {activeTab === "signup" && (
           <div className="flex items-center space-x-4">
