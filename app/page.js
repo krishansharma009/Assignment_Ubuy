@@ -2,6 +2,8 @@
 import { FaGoogle, FaFacebookF, FaApple, FaPaypal } from "react-icons/fa";
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("login");
@@ -10,6 +12,7 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
   const [message, setMessage] = useState("");
+   const router = useRouter();
 
   const validateEmail = (email) => {
     const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -80,6 +83,16 @@ export default function Home() {
 
   // Login Handler
   const handleLogin = async (e) => {
+     if (!email || !validateEmail(email)) {
+       alert("Please enter a valid email.");
+       return;
+     }
+     if (!password || !validatePassword(password)) {
+       alert(
+         "Password must be at least 6 characters long and contain both letters and numbers."
+       );
+       return;
+     }
     e.preventDefault();
     if (recaptchaValue) {
       try {
@@ -103,6 +116,7 @@ export default function Home() {
           setMessage("Login Successful");
           console.log(data); 
           alert("Login successful");
+          router.push("/Products");
         } else {
           setMessage(`Login failed: ${data.message}`);
         }
@@ -127,7 +141,7 @@ export default function Home() {
             onClick={() => setActiveTab("login")}
             className={`flex-1 py-2 text-center ${
               activeTab === "login"
-                ? "bg-yellow-400 text-black font-bold"
+                ? "bg-[#feb103] text-black font-bold"
                 : "bg-gray-200 text-gray-500"
             }`}
           >
@@ -137,7 +151,7 @@ export default function Home() {
             onClick={() => setActiveTab("signup")}
             className={`flex-1 py-2 text-center ${
               activeTab === "signup"
-                ? "bg-yellow-400 text-black font-bold"
+                ? "bg-[#feb103] text-black font-bold"
                 : "bg-gray-200 text-gray-500"
             }`}
           >
@@ -157,12 +171,13 @@ export default function Home() {
               required
             />
           </div>
-          <div className="flex items-center space-x-2">
+
+          <div className="flex items-center space-x-2 ">
             <div>
               <div>
                 {activeTab === "signup" ? (
                   <>
-                    <button className="px-3 py-1 bg-yellow-400 text-black rounded font-bold">
+                    <button className="px-3 py-1 bg-[#feb103] text-black rounded font-bold">
                       OTP
                     </button>
                     <input
@@ -175,7 +190,7 @@ export default function Home() {
                   </>
                 ) : (
                   <>
-                    <button className="px-3 py-1 bg-yellow-400 text-black rounded font-bold">
+                    <button className="px-3 py-1 bg-[#feb103] text-black rounded font-bold">
                       Password
                     </button>
                     <button className="px-3 py-1 bg-gray-200 text-gray-500 rounded">
@@ -228,7 +243,7 @@ export default function Home() {
           <div>
             <div className="flex items-center space-x-4">
               <ReCAPTCHA
-                sitekey="6LdZ45wqAAAAAEXfXQ6Sc8X08DJxndUDcwRPoojr" 
+                sitekey="6LdZ45wqAAAAAEXfXQ6Sc8X08DJxndUDcwRPoojr"
                 onChange={handleRecaptchaChange}
               />
             </div>
@@ -237,7 +252,7 @@ export default function Home() {
 
         <button
           onClick={activeTab === "signup" ? handleSignup : handleLogin}
-          className="w-full py-2 mt-4 bg-yellow-400 text-black font-bold rounded hover:bg-yellow-500"
+          className="w-full py-2 mt-4 bg-[#feb103] text-black font-bold rounded hover:bg-[#feb103]"
         >
           {activeTab === "signup" ? "Register" : "Login"}
         </button>
@@ -255,18 +270,26 @@ export default function Home() {
         )}
         <div className="mt-6 text-center flex items-center justify-center flex-col md:flex-row">
           <div className="flex justify-center space-x-4 mr-4">
-            <button className="p-2 rounded-full hover:bg-yellow-500">
-              <FaGoogle className="text-red-500 h-5 w-5" />
-            </button>
-            <button className="p-2 rounded-full hover:bg-yellow-500">
-              <FaFacebookF className="text-blue-600 h-5 w-5" />
-            </button>
-            <button className="p-2 rounded-full hover:bg-yellow-500">
-              <FaApple className="text-black h-5 w-5" />
-            </button>
-            <button className="p-2 rounded-full hover:bg-yellow-500">
-              <FaPaypal className="text-blue-800 h-5 w-5" />
-            </button>
+            <Link href="https://www.google.com/" target="_blank">
+              <button className="p-2 rounded-full hover:bg-[#feb103]">
+                <FaGoogle className="text-red-500 h-5 w-5" />
+              </button>
+            </Link>
+            <Link href="https://www.facebook.com/" target="_blank">
+              <button className="p-2 rounded-full hover:bg-[#feb103]">
+                <FaFacebookF className="text-blue-600 h-5 w-5" />
+              </button>
+            </Link>
+            <Link href="https://www.apple.com/" target="_blank">
+              <button className="p-2 rounded-full hover:bg-[#feb103]">
+                <FaApple className="text-black h-5 w-5" />
+              </button>
+            </Link>
+            <Link href="https://www.paypal.com/in/signin" target="_blank">
+              <button className="p-2 rounded-full hover:bg-[#feb103]">
+                <FaPaypal className="text-blue-800 h-5 w-5" />
+              </button>
+            </Link>
           </div>
           <p className="text-gray-600">Login with Social Accounts</p>
         </div>
